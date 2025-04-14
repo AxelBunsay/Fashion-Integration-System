@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin - View Logs</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>Customer Visit Logs</h1>
+    <table id="logTable">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Time In</th>
+          <th>Branch</th>
+          <th>Purpose</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <script>
+    fetch('http://localhost:3000/api/logs')
+      .then(res => res.json())
+      .then(data => {
+        const tableBody = document.querySelector('#logTable tbody');
+        data.forEach(log => {
+          const row = document.createElement('tr');
+          row.innerHTML = `
+            <td>${log.name}</td>
+            <td>${new Date(log.timeIn).toLocaleString()}</td>
+            <td>${log.branch}</td>
+            <td>${log.purpose}</td>
+          `;
+          tableBody.appendChild(row);
+        });
+      });
+  </script>
+</body>
+</html>

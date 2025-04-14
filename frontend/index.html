@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Customer Log</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>Customer Log Form</h1>
+    <form id="logForm">
+      <label for="name">Customer Name:</label>
+      <input type="text" id="name" name="name" required />
+
+      <label for="timeIn">Time In:</label>
+      <input type="datetime-local" id="timeIn" name="timeIn" required />
+
+      <label for="branch">Branch:</label>
+      <select id="branch" name="branch" required>
+        <option value="">Select Branch</option>
+        <option value="Calaca, Batangas">Calaca, Batangas</option>
+        <option value="BGC, Taguig">BGC, Taguig</option>
+      </select>
+
+      <label for="purpose">Purpose:</label>
+      <select id="purpose" name="purpose" required>
+        <option value="">Select Purpose</option>
+        <option value="Browsing">Browsing</option>
+        <option value="Purchase">Purchase</option>
+        <option value="Pickup">Pickup</option>
+        <option value="Visit">Visit</option>
+        <option value="Other">Other</option>
+      </select>
+
+      <button type="submit">Log In</button>
+    </form>
+    <p id="responseMsg"></p>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
