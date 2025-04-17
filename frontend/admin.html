@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Dashboard</title>
+  
+
+    <link rel="stylesheet" href="style.css" />
+ 
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  </head>
+  
+<body>
+  <div class="container">
+    <h1>Customer Visit Logs</h1>
+
+    <div class="filter-container">
+      <label for="branch">Branch:</label>
+      <select id="branch">
+        <option value="">All Branches</option>
+        <option value="Calaca">Calaca</option>
+        <option value="BGC">BGC</option>
+      </select>
+
+      <label for="date">Date:</label>
+      <input type="date" id="dateFilter" />
+    </div>
+
+    <divclass="export-buttons">
+      <button id="exportCSV">Export to CSV</button>
+      <button id="exportPDF">Export to PDF</button>
+    </div>
+
+    <table class="log-table" id="logTable">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Time In</th>
+          <th>Branch</th>
+          <th>Purpose</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+
+    <canvas id="logChart" width="400" height="200"></canvas>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
+  
+  <script>
+    fetch('http://localhost:3000/api/logs')
+      .then(res => res.json())
+      .then(data => {
+        const tableBody = document.querySelector('#logTable tbody');
+        data.forEach(log => {
+          const row = document.createElement('tr');
+          row.innerHTML = `
+            <td>${log.name}</td>
+            <td>${new Date(log.timeIn).toLocaleString()}</td>
+            <td>${log.branch}</td>
+            <td>${log.purpose}</td>
+          `;
+          tableBody.appendChild(row);
+        });
+      });
+  </script>
+</body>
+</html>

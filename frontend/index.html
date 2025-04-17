@@ -3,41 +3,84 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Customer Log</title>
-  <link rel="stylesheet" href="styles.css" />
+  <title>Admin - Customer Logs</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <div class="container">
-    <h1>Customer Log Form</h1>
-    <form id="logForm">
-      <label for="name">Customer Name:</label>
-      <input type="text" id="name" name="name" required />
+    <h1>Customer Visit Logs</h1>
+    
+    <table class="log-table" id="logTable">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Time In</th>
+          <th>Branch</th>
+          <th>Purpose</th>
+        </tr>
+      </thead>
+      <tbody>
 
-      <label for="timeIn">Time In:</label>
-      <input type="datetime-local" id="timeIn" name="timeIn" required />
-
-      <label for="branch">Branch:</label>
-      <select id="branch" name="branch" required>
-        <option value="">Select Branch</option>
-        <option value="Calaca, Batangas">Calaca, Batangas</option>
-        <option value="BGC, Taguig">BGC, Taguig</option>
-      </select>
-
-      <label for="purpose">Purpose:</label>
-      <select id="purpose" name="purpose" required>
-        <option value="">Select Purpose</option>
-        <option value="Browsing">Browsing</option>
-        <option value="Purchase">Purchase</option>
-        <option value="Pickup">Pickup</option>
-        <option value="Visit">Visit</option>
-        <option value="Other">Other</option>
-      </select>
-
-      <button type="submit">Log In</button>
-    </form>
-    <p id="responseMsg"></p>
+      </tbody>
+    </table>
   </div>
 
-  <script src="script.js"></script>
+  <form id="logForm">
+    <label for="name">Customer Name:</label>
+    <input type="text" id="name" name="name" required>
+  
+    <label for="timeIn">Time In:</label>
+    <input type="datetime-local" id="timeIn" name="timeIn" required>
+  
+    <label for="branch">Branch:</label>
+    <select id="branch" name="branch" required>
+      <option value="">Select Branch</option>
+      <option value="Calaca, Batangas">Calaca, Batangas</option>
+      <option value="BGC, Taguig">BGC, Taguig</option>
+    </select>
+  
+    <label for="purpose">Purpose:</label>
+    <select id="purpose" name="purpose" required>
+      <option value="">Select Purpose</option>
+      <option value="Browsing">Browsing</option>
+      <option value="Purchase">Purchase</option>
+      <option value="Pickup">Pickup</option>
+      <option value="Visit">Visit</option>
+      <option value="Other">Other</option>
+    </select>
+  
+    <button type="submit">Log In</button>
+  </form>  
+
+  <script>
+    fetch('http://localhost:3000/api/logs')
+      .then(res => res.json())
+      .then(data => {
+        const tableBody = document.querySelector('#logTable tbody');
+        if (data.length === 0) {
+          const row = document.createElement('tr');
+          row.innerHTML = `<td colspan="4">No customer logs available.</td>`;
+          tableBody.appendChild(row);
+        } else {
+          data.forEach(log => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+              <td>${log.name}</td>
+              <td>${new Date(log.timeIn).toLocaleString()}</td>
+              <td>${log.branch}</td>
+              <td>${log.purpose}</td>
+            `;
+            tableBody.appendChild(row);
+          });
+        }
+      })
+      .catch(err => {
+        const tableBody = document.querySelector('#logTable tbody');
+        const row = document.createElement('tr');
+        row.innerHTML = `<td colspan="4">Error loading data.</td>`;
+        tableBody.appendChild(row);
+        console.error('Fetch error:', err);
+      });
+  </script>
 </body>
 </html>
